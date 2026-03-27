@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Student Performance Predictor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>StudyPredict</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="scrollToSection('predictor')">Predictor</a>
+                <a href="#" onclick="scrollToSection('tips')">Tips</a>
+                <a href="#" onclick="scrollToSection('about')">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="main-title">
+                <span class="gradient-text">Student Performance Predictor</span>
+            </h1>
+            <p class="subtitle">AI-powered predictions to boost your academic success</p>
+            <div class="header-stats">
+                <div class="stat">
+                    <i class="fas fa-chart-line"></i>
+                    <span>95%</span> Accuracy
+                </div>
+                <div class="stat">
+                    <i class="fas fa-brain"></i>
+                    <span>AI</span> Powered
+                </div>
+                <div class="stat">
+                    <i class="fas fa-lightning-bolt"></i>
+                    <span>Instant</span> Results
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Predictor Section -->
+        <section id="predictor" class="predictor-section">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <i class="fas fa-magic"></i> Make Your Prediction
+                </h2>
+
+                <div class="content-grid">
+                    <!-- Form Card -->
+                    <div class="form-card">
+                        <form id="predictionForm" class="prediction-form">
+                            <div class="form-group">
+                                <label for="study_hours">
+                                    <i class="fas fa-book"></i> Study Hours Per Day
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="study_hours" 
+                                    name="study_hours"
+                                    min="0" 
+                                    max="24" 
+                                    step="0.5"
+                                    placeholder="0-24 hours"
+                                    required
+                                >
+                                <span class="hint">Recommended: 6-8 hours</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone_hours">
+                                    <i class="fas fa-mobile-alt"></i> Phone Usage Per Day
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="phone_hours" 
+                                    name="phone_hours"
+                                    min="0" 
+                                    max="24" 
+                                    step="0.5"
+                                    placeholder="0-24 hours"
+                                    required
+                                >
+                                <span class="hint">Recommended: 2-3 hours</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sleep_hours">
+                                    <i class="fas fa-moon"></i> Sleep Hours Per Night
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="sleep_hours" 
+                                    name="sleep_hours"
+                                    min="0" 
+                                    max="24" 
+                                    step="0.5"
+                                    placeholder="0-24 hours"
+                                    required
+                                >
+                                <span class="hint">Recommended: 7-9 hours</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="attendance">
+                                    <i class="fas fa-calendar-check"></i> Attendance Percentage
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="attendance" 
+                                    name="attendance"
+                                    min="0" 
+                                    max="100" 
+                                    step="1"
+                                    placeholder="0-100%"
+                                    required
+                                >
+                                <span class="hint">Recommended: 90%+</span>
+                            </div>
+
+                            <button type="submit" class="submit-btn">
+                                <span class="btn-text">Get Prediction</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </form>
+
+                        <!-- Input Guide -->
+                        <div class="input-guide">
+                            <h4><i class="fas fa-info-circle"></i> Input Guide</h4>
+                            <ul>
+                                <li>Provide accurate information for better predictions</li>
+                                <li>All fields are required</li>
+                                <li>Values must be between the specified ranges</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Results Card -->
+                    <div id="resultsCard" class="results-card hidden">
+
+                        <!-- Header -->
+                        <div class="results-header">
+                            <h3><i class="fas fa-poll"></i> Prediction Results</h3>
+                            <button onclick="resetForm()" class="reset-btn">
+                                <i class="fas fa-redo"></i> New Prediction
+                            </button>
+                        </div>
+
+                        <!-- Grade + Confidence Ring Row -->
+                        <div class="result-top-row">
+                            <!-- Animated Grade Badge -->
+                            <div class="grade-badge-wrap">
+                                <div id="gradeBadge" class="grade-badge">
+                                    <span id="predictionResult" class="grade-letter">A</span>
+                                    <span class="grade-label-text">Predicted Grade</span>
+                                </div>
+                                <div id="gradeMessage" class="grade-message">Excellent Performance!</div>
+                            </div>
+
+                            <!-- Circular Confidence Ring -->
+                            <div class="confidence-ring-wrap">
+                                <svg class="confidence-ring" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                                    <circle id="ringFill" class="ring-fill" cx="60" cy="60" r="50"
+                                        stroke-dasharray="314"
+                                        stroke-dashoffset="314"/>
+                                </svg>
+                                <div class="ring-inner">
+                                    <span id="confidenceValue" class="ring-pct">0%</span>
+                                    <span class="ring-sub">Confidence</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Metric Bars -->
+                        <div class="metric-bars-box">
+                            <h4><i class="fas fa-sliders-h"></i> Your Input Metrics</h4>
+                            <div class="metric-bar-row">
+                                <div class="mb-icon"><i class="fas fa-book"></i></div>
+                                <div class="mb-info">
+                                    <span class="mb-label">Study Hours</span>
+                                    <span id="mbStudy" class="mb-val">0h</span>
+                                </div>
+                                <div class="mb-track"><div id="mbStudyBar" class="mb-fill study-fill" style="width:0%"></div></div>
+                            </div>
+                            <div class="metric-bar-row">
+                                <div class="mb-icon phone-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="mb-info">
+                                    <span class="mb-label">Phone Usage</span>
+                                    <span id="mbPhone" class="mb-val">0h</span>
+                                </div>
+                                <div class="mb-track"><div id="mbPhoneBar" class="mb-fill phone-fill" style="width:0%"></div></div>
+                            </div>
+                            <div class="metric-bar-row">
+                                <div class="mb-icon sleep-icon"><i class="fas fa-moon"></i></div>
+                                <div class="mb-info">
+                                    <span class="mb-label">Sleep Hours</span>
+                                    <span id="mbSleep" class="mb-val">0h</span>
+                                </div>
+                                <div class="mb-track"><div id="mbSleepBar" class="mb-fill sleep-fill" style="width:0%"></div></div>
+                            </div>
+                            <div class="metric-bar-row">
+                                <div class="mb-icon attend-icon"><i class="fas fa-calendar-check"></i></div>
+                                <div class="mb-info">
+                                    <span class="mb-label">Attendance</span>
+                                    <span id="mbAttend" class="mb-val">0%</span>
+                                </div>
+                                <div class="mb-track"><div id="mbAttendBar" class="mb-fill attend-fill" style="width:0%"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Insights Cards -->
+                        <div class="insights-box">
+                            <h4><i class="fas fa-lightbulb"></i> Personalized Insights</h4>
+                            <div id="insightsList" class="insights-cards"></div>
+                        </div>
+
+                        <!-- Radar Chart -->
+                        <div class="chart-container">
+                            <h4><i class="fas fa-chart-radar"></i> Performance Radar</h4>
+                            <canvas id="metricsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section id="tips" class="tips-section">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <i class="fas fa-lightbulb"></i> Success Tips
+                </h2>
+                <div id="tipsList" class="tips-grid">
+                    <!-- Tips will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i> How It Works
+                </h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Machine Learning</h3>
+                        <p>Our model is trained on real student data using advanced Random Forest algorithms to predict academic performance accurately.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Data Analysis</h3>
+                        <p>We analyze multiple factors including study habits, lifestyle, and attendance to provide comprehensive predictions.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Real Insights</h3>
+                        <p>Get actionable insights and personalized recommendations to improve your academic performance.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Privacy First</h3>
+                        <p>Your data is processed securely and never stored. All predictions are made locally without saving personal information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message hidden">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText">Error occurred</span>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-spinner hidden">
+            <div class="spinner"></div>
+            <p>Making prediction...</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Student Performance Predictor. Built with <i class="fas fa-heart"></i> for education.</p>
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
